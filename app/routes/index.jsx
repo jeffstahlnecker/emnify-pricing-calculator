@@ -110,7 +110,7 @@ export default function Index() {
   const { countries } = pricing;
   const [query, setQuery] = useState("");
   const [selectedCountries, setSelectedCountries] = useState([]);
-  const [selectedCurrency, setSelectedCurrency] = useState(1);
+  const [selectedCurrency, setSelectedCurrency] = useState(2);
   const [enabled, setEnabled] = useState(false);
   const [deviceCount, setDeviceCount] = useState(1);
   const [pricePerActive, setPricePerActive] = useState();
@@ -321,7 +321,7 @@ export default function Index() {
                 checked={enabled}
                 onChange={(e) => {
                   setEnabled(e);
-                  enabled ? setSelectedCurrency(1) : setSelectedCurrency(2);
+                  enabled ? setSelectedCurrency(2) : setSelectedCurrency(1);
                 }}
                 className={classNames(
                   enabled ? "bg-edbackground" : "bg-gray-200",
@@ -573,7 +573,10 @@ export default function Index() {
                 </div>
                 <div className="">
                   <div className="mt-1 text-3xl font-semibold tracking-tight text-edbackground">
-                    {calculatedPricing.data === 0 ? "" : calculatedPricing.data}
+                    {calculatedPricing.data === 0
+                      ? ""
+                      : calculatedPricing.data +
+                        ` ${selectedCurrency === 1 ? "EUR" : "USD"}`}
                   </div>
                 </div>
                 <div className="">
@@ -581,7 +584,10 @@ export default function Index() {
                     Per Active SIM:
                   </div>
                   <div className="mt-1 text-3xl font-semibold tracking-tight text-edbackground">
-                    {pricePerActive}
+                    {pricePerActive === undefined
+                      ? ""
+                      : pricePerActive +
+                        ` ${selectedCurrency === 1 ? "EUR" : "USD"} `}
                   </div>
                 </div>
               </div>
@@ -598,7 +604,8 @@ export default function Index() {
                   {inclusiveVolume.id === 0
                     ? ""
                     : inclusiveVolume.message === ""
-                    ? inclusiveVolume.cost * deviceCount
+                    ? inclusiveVolume.cost * deviceCount +
+                      ` ${selectedCurrency === 1 ? "EUR" : "USD"} `
                     : inclusiveVolume.message}
                 </div>
               </div>
@@ -614,8 +621,8 @@ export default function Index() {
                         inclusiveVolume.volume * deviceCount
                       } MB, then the overage fee is ${
                         inclusiveVolume.excessTraffic
-                      } per MB`
-                    : ""}
+                      } ${selectedCurrency === 1 ? "EUR " : "USD "}per MB`
+                    : inclusiveVolume.message}
                 </div>
               </div>
             </div>
